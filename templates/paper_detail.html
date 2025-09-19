@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}{{ paper.title }} - LLM Research Analyzer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>{{ paper.title }}</h3>
+                <p class="mb-0 text-muted">
+                    <i class="fas fa-user me-1"></i>{{ paper.authors }}
+                </p>
+            </div>
+            <div class="card-body">
+                {% if paper.abstract %}
+                <h5>Abstract</h5>
+                <p>{{ paper.abstract }}</p>
+                <hr>
+                {% endif %}
+                
+                <div class="summary-box mb-4">
+                    <h5><i class="fas fa-file-alt me-2"></i>AI Summary</h5>
+                    <p>{{ paper.summary }}</p>
+                </div>
+                
+                <div class="findings-box mb-4">
+                    <h5><i class="fas fa-lightbulb me-2"></i>Key Findings & Methodology</h5>
+                    <p>{{ paper.key_findings }}</p>
+                </div>
+                
+                <div class="gaps-box mb-4">
+                    <h5><i class="fas fa-search me-2"></i>Research Gaps & Future Work</h5>
+                    <p>{{ paper.research_gaps }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle me-2"></i>Paper Information</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Filename:</strong> {{ paper.filename }}</p>
+                <p><strong>Upload Date:</strong> {{ paper.upload_date }}</p>
+                <p><strong>Content Length:</strong> {{ paper.content|length }} characters</p>
+                <hr>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary w-100">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Papers
+                </a>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5><i class="fas fa-share-alt me-2"></i>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-outline-primary w-100 mb-2" onclick="copyToClipboard('{{ paper.summary }}')">
+                    <i class="fas fa-copy me-2"></i>Copy Summary
+                </button>
+                <button class="btn btn-outline-success w-100 mb-2" onclick="copyToClipboard('{{ paper.research_gaps }}')">
+                    <i class="fas fa-copy me-2"></i>Copy Research Gaps
+                </button>
+                <button class="btn btn-outline-info w-100" onclick="copyToClipboard('{{ paper.key_findings }}')">
+                    <i class="fas fa-copy me-2"></i>Copy Key Findings
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        alert('Copied to clipboard!');
+    }, function(err) {
+        console.error('Could not copy text: ', err);
+        alert('Failed to copy to clipboard');
+    });
+}
+</script>
+{% endblock %}
+
+
